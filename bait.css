@@ -1,0 +1,7 @@
+img .bait {
+    visibility: visible;
+}
+
+img .bait:hover {
+    visibility: hidden;
+}
