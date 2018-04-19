@@ -12,21 +12,24 @@ function yt_bait_score(str) {
     score += (nb_upper/str.length) * 100;
     if (str.length > 50) {
 	/* The title dont even fit x) */
-	score += 10;
+	score += str.length - 50;
     }
-    if (str.match(/mix/i) && str.match(/music/i)) {
+    if (str.match(/mix/i) || str.match(/music/i) || str.match(/album/)) {
 	score -= 10;
     }
     if (str.match(/\d+/) && (str.match(/top/i) || str.match(/best/i) || str.match(/people/i) || str.match(/thing/i))) {
 	score += 50;
     }
-    if (str.match(/you/i) && (str.match(/must/i) || str.match(/should/))) {
+    if ((str.match(/you/i) || str.match(/see/i)) && (str.match(/must/i) || str.match(/should/))) {
 	score += 10;
     }
     if ((str.match(/but/i) || (str.match(/when/i)) && (str.match(/look/i) || str.match(/closer/i) || str.match(/happen/i)))) {
 	score += 10;
     }
     if (str.match(/PERFECT/) || str.match(/REFUSED/) || str.match(/EXPOSED/) || str.match(/SCAM/)) {
+	score += 10;
+    }
+    if ((str.match(/caugh/i)) && (str.match(/camera/i) || str.match(/tv/i) || str.match(/live/i))) {
 	score += 10;
     }
 
