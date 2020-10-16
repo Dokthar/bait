@@ -2,7 +2,7 @@ document.body.style.border = "5px solid red";
 
 function bait_img() {
     let img = document.createElement("img");
-    img.setAttribute("src", browser.extension.getURL("icons/bait.png"));
+    img.setAttribute("src", browser.runtime.getURL("icons/bait.png"));
     return img;
 }
 
@@ -38,34 +38,29 @@ function yt_bait_score(str) {
 
 
 function filter_yt(ytv) {
+    var bait_img_url = browser.extension.getURL("icons/bait.png");
     for (var i = 0; i < ytv.length; i++) {
 	var v = ytv[i];
 	var t = v.getElementsByTagName("h3")[0];
-	if (t.innerText.match(/BAIT/)) {
-	    continue;
-	}
 	var bs = yt_bait_score(t.innerText);
 	if (bs > 50) {
 	    t.setAttribute("title", t.innerText)
 	    t.innerText = "BAIT (" + bs.toFixed(2) + ")";
 	    var a = v.getElementsByClassName('yt-img-shadow');
-	    a.img.setAttribute("src", browser.extension.getURL("icons/bait.png"));
+	    a.img.setAttribute("src", bait_img_url);
 	    a.img.setAttribute("alt", "bait");
 	    a.img.classList.add('bait');
 	}
     }
 }
 
-/* add our css */
-var link = document.createElement("link");
-link.setAttribute("rel", "stylesheet");
-link.setAttribute("href", browser.extension.getURL("bait.css"));
-var head = document.getElementsByTagName("head")[0];
-head.appendChild(link);
-
-var observer = new MutationObserver(function(mutations) {
-    filter_yt(document.getElementsByTagName("ytd-grid-video-renderer"));
+function do_filter() {
+    filter_yt(document.getElementsByTagName("ytd-rich-item-renderer"));
     filter_yt(document.getElementsByTagName("ytd-compact-video-renderer"));
-});
+}
 
-observer.observe(document, {attributes: false, childList: true, characterData: false, subtree:true});
+do_filter();
+
+setInterval(function() {
+    do_filter();
+}, 100);

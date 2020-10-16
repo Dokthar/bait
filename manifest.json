@@ -10,16 +10,12 @@
       "96": "icons/bait-96.png"
   },
 
+  "content_security_policy": "default-src 'self'",
   "content_scripts": [
     {
       "matches": ["*://*.youtube.com/*"],
       "js": ["bait.js"]
     }
   ],
-
- "web_accessible_resources": [
-    "icons/bait.png"
-  ]
-
-    
+ "web_accessible_resources": ["icons/bait.png"]
 }
